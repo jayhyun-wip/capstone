@@ -57,5 +57,29 @@
 
         <div class="footer"> © 2026 BayanTap. All rights reserved. </div>
     </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Add your authentication logic here
+            console.log('Login attempt:', { username, password });
+            
+            // Example: Show loading state
+            const btn = document.querySelector('.sign-in-btn');
+            btn.textContent = 'Signing in...';
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Handle login success/failure
+                alert('Login functionality would be implemented here');
+                btn.textContent = 'Sign In';
+            }, 1500);
+        });
+    </script>
+    
 </body>
 </html>
