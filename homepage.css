@@ -1,0 +1,409 @@
+* {
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    background-image: url(img/bg.jpg);
+    background-size: cover;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+}
+
+/* HEADER */
+
+.lg {
+    padding-top: 15px;
+    padding-left: 43.5px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+}
+
+.wtrlg {
+    width: 80px;
+    height: 80px;
+}
+
+.anbt {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 675px;
+    padding-bottom: 15px;
+    font-size: 30px;
+}
+
+.mvwd {
+    font-size: 15px;
+    font-weight: normal;
+    color: darkgray;
+}
+
+.tptxt {
+    padding-top: 15px;
+    padding-left: 14px;
+    padding-right: 10px;
+    padding-bottom: 15px;
+}
+
+.mvlg {
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 15px;
+}
+
+.mvlg1 {
+    width: 80px;
+    height: 80px;
+}
+
+.lgtbtn {
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-right: 50px;
+    padding-bottom: 15px;
+}
+
+.lgtbtn button {
+    background-color:blue;
+    color: whitesmoke;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 25px;
+    padding-right: 26px;
+    border-radius: 5px;
+    border-color: blue;
+}
+
+/* TOTAL HOUSEHOLDS */
+
+.dclg {
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.docimg {
+    height: 20px;
+    width: 20px;
+}
+
+.ttltxt {
+    padding-top: 5px;
+    padding-left: 180px;
+    padding-right: 20px;
+    font-size: 15px;
+    color: rgb(17, 56, 198);
+}
+
+.ttlhhtxt {
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.ttlhhnum {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 5.5px;
+}
+
+.rtlg {
+    padding-left: 15px;
+    padding-right: -20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.rtimg {
+    padding-top: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+.aatxt {
+    font-size: 13px;
+    color: rgb(82, 82, 82);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+/* PAID THIS MONTH */
+
+.clg {
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.checkimg {
+    height: 20px;
+    width: 20px;
+}
+
+.rt1 {
+    padding-top: 5px;
+    padding-left: 180px;
+    padding-right: 20px;
+    font-size: 15px;
+    color: rgb(39, 205, 39);
+}
+
+.ptmtxt {
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.ptmnum {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 5.5px;
+}
+
+.rtlg2 {
+    padding-left: 15px;
+    padding-right: -20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.rtimg2 {
+    padding-top: 10px;
+    height: 20px;
+    width: 20px;
+}
+
+.flmtxt {
+    font-size: 13px;
+    color: rgb(39, 205, 39);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+/* PENDING */
+
+.pndg {
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.pendingimg {
+    height: 20px;
+    width: 20px;
+}
+
+.rt2 {
+    padding-top: 5px;
+    padding-left: 100px;
+    padding-right: 20px;
+    font-size: 15px;
+    color: rgb(228, 180, 36);
+}
+
+.pndgtxt {
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.pndgnum {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 5.5px;
+}
+
+.rtlg2 {
+    padding-left: 15px;
+    padding-right: -20px;
+    padding-top: 5px;
+    padding-bottom: 15px;
+}
+
+.actxt {
+    font-size: 13px;
+    color: rgb(228, 180, 36);
+    padding-top: 15px;
+    padding-bottom: 23px;
+    padding-left: 15px;
+}
+
+/* OVERDUE */
+
+.ovrd {
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.overdueimg {
+    height: 20px;
+    width: 20px;
+}
+
+.rt3 {
+    padding-top: 5px;
+    padding-left: 100px;
+    padding-right: 20px;
+    font-size: 15px;
+    color: rgb(39, 205, 39);
+}
+
+.ovrdtxt {
+    font-size: 13px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.ovrdnum {
+    font-size: 30px;
+    font-weight: bold;
+    padding-left: 15px;
+    padding-top: 5.5px;
+}
+
+.rfutxt {
+    font-size: 13px;
+    color: rgb(39, 205, 39);
+    padding-top: 15px;
+    padding-bottom: 23px;
+    padding-left: 15px;
+}
+
+/* SEARCH */
+
+.spc1 {
+    padding-top: 15px;
+}
+
+.spc2 {
+    padding-left: 20px;
+}
+
+.srchlg {
+    width: 20px;
+    height: 20px;
+    padding-right: 10px;
+}
+
+.srchtxt {
+    font-size: 15px;
+    color: rgb(56, 56, 56);
+    padding-left: 20px;
+    padding-right: 710px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.spc3 {
+    padding-left: 10px;
+}
+
+.astxt {
+    font-size: 15px;
+    color: rgb(56, 56, 56);
+    padding: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.spc4 {
+    padding-left: 10px;
+}
+
+.dttxt {
+    font-size: 15px;
+    color: rgb(56, 56, 56);
+    padding: 10px;
+    border: solid 1px;
+    border-radius: 10px;
+}
+
+.spc5 {
+    padding-right: 20px;
+}
+
+.spc6 {
+    padding-top: 15px;
+}
+
+/* RESIDENTS */
+
+.spc7 {
+    padding-top: 15px;
+}
+
+.spc8 {
+    padding-left: 15px;
+}
+
+.rbtxt {
+    font-size: 14px;
+    font-weight: bold;
+    /* padding-right: 700px; */
+}
+
+.txt1 {
+    font-size: 10px;
+}
+
+.spc9 {
+    padding-top: 10px;
+}
+
+.spc10 {
+    padding-left: 10px;
+}
+
+.hh1 {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.nametxt {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.usgtxt {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.amnttxt {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.sttstxt {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.actntxt {
+    font-size: 14px;
+    color: rgb(107, 107, 107);
+    padding-right: 100px;
+}
+
+.rss1 {
+    font-size: 14px;
+}
