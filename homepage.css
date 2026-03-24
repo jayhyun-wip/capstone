@@ -80,6 +80,10 @@ body {
 
 /* TOTAL HOUSEHOLDS */
 
+.tbl1 {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .dclg {
     padding-top: 20px;
     padding-left: 15px;
@@ -343,11 +347,11 @@ body {
 /* RESIDENTS */
 
 .spc7 {
-    padding-top: 15px;
+    padding-top: 20px;
 }
 
 .spc8 {
-    padding-left: 15px;
+    padding-left: 20px;
 }
 
 .rbtxt {
@@ -361,7 +365,8 @@ body {
 }
 
 .spc9 {
-    padding-top: 10px;
+    padding-top: 5px;
+    border-bottom: solid darkgray 1px;
 }
 
 .spc10 {
@@ -370,40 +375,48 @@ body {
 
 .hh1 {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .nametxt {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .usgtxt {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .amnttxt {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .sttstxt {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
+    font-weight: bold;
+    padding-top: 5px;
 }
 
 .actntxt {
     font-size: 14px;
-    color: rgb(107, 107, 107);
+    color: rgb(77, 77, 77);
     padding-right: 100px;
-}
-
-.rss1 {
-    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
 }
