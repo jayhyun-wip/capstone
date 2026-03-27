@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BayanTap – Treasurer Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue:       #2563eb;
+    --blue-light: #eff6ff;
+    --teal:       #0ea5e9;
+    --green:      #16a34a;
+    --green-bg:   #dcfce7;
+    --red:        #dc2626;
+    --red-bg:     #fee2e2;
+    --amber:      #d97706;
+    --amber-bg:   #fef3c7;
+    --gray-50:    #f8fafc;
+    --gray-100:   #f1f5f9;
+    --gray-200:   #e2e8f0;
+    --gray-400:   #94a3b8;
+    --gray-500:   #64748b;
+    --gray-700:   #334155;
+    --gray-900:   #0f172a;
+    --white:      #ffffff;
+    --shadow-sm:  0 1px 3px rgba(0,0,0,.08);
+    --shadow-md:  0 4px 16px rgba(0,0,0,.10);
+    --shadow-lg:  0 8px 32px rgba(0,0,0,.13);
+    --radius:     14px;
+    --radius-sm:  8px;
+  }
+ 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
+ 
+  /* ── NAV ── */
+  nav {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    padding: 0 clamp(16px, 4vw, 48px);
+    height: 68px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-brand { display: flex; align-items: center; gap: 10px; }
+  .nav-logo {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+  }
+  .nav-text h1 { font-size: 1.25rem; font-weight: 800; color: var(--gray-900); }
+  .nav-text p  { font-size: .73rem; color: var(--gray-500); font-weight: 500; margin-top: 1px; }
+ 
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .portal-info { text-align: right; }
+  .portal-info .label { font-weight: 700; font-size: .9rem; color: var(--gray-900); }
+  .portal-info .month { font-size: .75rem; color: var(--gray-500); }
+  .nav-badge {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: linear-gradient(135deg,#f97316,#ef4444);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .btn-logout {
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    padding: 9px 20px;
+    border-radius: 9px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: background .2s;
+    white-space: nowrap;
+  }
+  .btn-logout:hover { background: #1d4ed8; }
+ 
+  /* ── HERO BANNER ── */
+  .hero {
+    background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 55%, #1e3a8a 100%);
+    padding: clamp(24px,4vw,40px) clamp(16px,4vw,48px);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    position: relative;
+  }
+  .stat-card {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(12px);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-md);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+  .stat-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .stat-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--gray-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .stat-badge {
+    font-size: .68rem; font-weight: 700;
+    padding: 3px 8px; border-radius: 20px;
+  }
+  .badge-blue  { background: #dbeafe; color: var(--blue); }
+  .badge-green { background: var(--green-bg); color: var(--green); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); }
+  .badge-red   { background: var(--red-bg); color: var(--red); }
+ 
+  .stat-label { font-size: .78rem; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+  .stat-value { font-size: 2rem; font-weight: 800; color: var(--gray-900); line-height: 1; }
+  .stat-sub   { font-size: .74rem; font-weight: 500; margin-top: 8px; display: flex; align-items: center; gap: 4px; }
+  .stat-sub.positive { color: var(--green); }
+  .stat-sub.neutral  { color: var(--amber); }
+  .stat-sub.alert    { color: var(--red); }
+ 
+  /* ── MAIN CONTENT ── */
+  .main { padding: clamp(16px,3vw,32px) clamp(16px,4vw,48px); }
+ 
+  /* Search + Filters */
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .search-wrap {
+    flex: 1 1 260px;
+    position: relative;
+  }
+  .search-wrap svg {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--gray-400);
+    pointer-events: none;
+  }
+  .search-wrap input {
+    width: 100%;
+    padding: 11px 16px 11px 42px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: .87rem;
+    color: var(--gray-900);
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s;
+    outline: none;
+  }
+  .search-wrap input:focus { border-color: var(--blue); }
+  .filter-btn {
+    padding: 11px 18px;
+    border: 1.5px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-family: inherit;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s, background .2s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+ 
+  /* Layout split */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+ 
+  /* ── TABLE CARD ── */
+  .table-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .table-card-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .table-card-header h2 { font-size: 1rem; font-weight: 700; }
+  .table-card-header p  { font-size: .76rem; color: var(--gray-500); margin-top: 2px; }
+ 
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 520px; }
+  thead th {
+    padding: 10px 14px;
+    font-size: .7rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .06em;
+    color: var(--gray-500);
+    background: var(--gray-50);
+    text-align: left;
+    white-space: nowrap;
+  }
+  tbody tr { border-top: 1px solid var(--gray-100); transition: background .15s; }
+  tbody tr:hover { background: var(--gray-50); }
+  tbody td { padding: 12px 14px; vertical-align: middle; }
+ 
+  .hh-chip {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--blue);
+    color: var(--white);
+    font-size: .75rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .hh-id   { font-size: .82rem; font-weight: 700; color: var(--gray-900); }
+  .hh-cell { display: flex; align-items: center; gap: 10px; }
+  .res-name { font-size: .85rem; font-weight: 600; color: var(--gray-900); }
+  .res-date { font-size: .72rem; color: var(--gray-400); margin-top: 1px; }
+  .usage-main { font-size: .85rem; font-weight: 600; }
+  .usage-range { font-size: .7rem; color: var(--gray-400); font-family: 'DM Mono', monospace; }
+  .amount { font-size: .9rem; font-weight: 700; color: var(--gray-900); }
+  .status-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: .7rem; font-weight: 700; letter-spacing: .04em;
+  }
+  .chip-paid   { background: var(--green-bg); color: var(--green); }
+  .chip-unpaid { background: var(--red-bg); color: var(--red); }
+ 
+  .action-btn {
+    background: transparent; border: none; cursor: pointer;
+    color: var(--gray-400); font-size: 18px; padding: 4px;
+    border-radius: 6px; transition: background .15s, color .15s;
+  }
+  .action-btn:hover { background: var(--gray-100); color: var(--blue); }
+ 
+  /* ── RECEIPT CARD ── */
+  .receipt-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+  }
+  .receipt-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .receipt-header .title  { font-size: .8rem; font-weight: 700; color: var(--gray-700); text-transform: uppercase; letter-spacing: .05em; }
+  .receipt-header .sub    { font-size: .7rem; color: var(--gray-400); margin-top: 2px; }
+  .btn-print {
+    background: var(--gray-900);
+    color: var(--white);
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: .78rem;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    transition: background .2s;
+  }
+  .btn-print:hover { background: var(--gray-700); }
+ 
+  .receipt-body { padding: 20px; }
+  .receipt-logo { text-align: center; margin-bottom: 14px; }
+  .receipt-logo .r-title  { font-size: 1.1rem; font-weight: 800; letter-spacing: .05em; color: var(--blue); }
+  .receipt-logo .r-sub    { font-size: .72rem; color: var(--gray-500); }
+  .receipt-logo .r-off    { font-size: .68rem; color: var(--gray-400); }
+  .receipt-divider { border: none; border-top: 1.5px dashed var(--gray-200); margin: 12px 0; }
+ 
+  .receipt-meta { font-size: .78rem; }
+  .receipt-row { display: flex; justify-content: space-between; padding: 3px 0; }
+  .receipt-row .key   { color: var(--gray-500); }
+  .receipt-row .val   { font-weight: 600; color: var(--gray-900); text-align: right; }
+  .receipt-row .val.bold { font-weight: 700; }
+ 
+  .consumption-box {
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+    font-size: .78rem;
+  }
+  .consumption-box .c-title { font-weight: 700; margin-bottom: 8px; color: var(--gray-700); }
+  .consumption-box .c-row   { display: flex; justify-content: space-between; padding: 2px 0; color: var(--gray-600); }
+  .consumption-box .c-total { display: flex; justify-content: space-between; font-weight: 700; border-top: 1px solid var(--gray-200); margin-top: 6px; padding-top: 6px; }
+ 
+  .total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--blue);
+    color: var(--white);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 700;
+    margin: 12px 0;
+  }
+  .total-row .label { font-size: .82rem; }
+  .total-row .amount { font-size: 1.05rem; }
+ 
+  .paid-badge {
+    text-align: center;
+    background: var(--green-bg);
+    color: var(--green);
+    font-weight: 800;
+    font-size: .85rem;
+    padding: 10px;
+    border-radius: 8px;
+    letter-spacing: .04em;
+    margin-bottom: 12px;
+  }
+ 
+  .sig-row {
+    display: flex; justify-content: space-between;
+    font-size: .72rem; margin-top: 14px;
+  }
+  .sig-box { text-align: center; flex: 1; }
+  .sig-box .sig-label { color: var(--gray-400); margin-bottom: 6px; }
+  .sig-box .sig-name  { font-weight: 700; border-top: 1px solid var(--gray-300); padding-top: 4px; font-size: .75rem; }
+ 
+  .receipt-footer { text-align: center; font-size: .65rem; color: var(--gray-400); margin-top: 10px; line-height: 1.5; }
+ 
+  /* ── RESPONSIVE BREAKPOINTS ── */
+  @media (max-width: 900px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+    .receipt-card { order: -1; } /* show receipt above table on mobile? keep below */
+  }
+ 
+  @media (max-width: 640px) {
+    nav { height: auto; padding: 10px 16px; flex-wrap: wrap; gap: 10px; }
+    .portal-info { display: none; }
+    .nav-badge   { display: none; }
+    .stats-grid  { grid-template-columns: 1fr 1fr; }
+    .stat-value  { font-size: 1.6rem; }
+    .toolbar     { flex-direction: column; }
+    .filter-btn  { width: 100%; }
+  }
+ 
+  @media (max-width: 420px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .nav-text h1 { font-size: 1.1rem; }
+  }
+ 
+  /* print styles */
+  @media print {
+    nav, .hero, .toolbar, .table-card, .receipt-header .btn-print { display: none !important; }
+    .content-grid { grid-template-columns: 1fr; }
+    .receipt-card { box-shadow: none; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-logo">💧</div>
+    <div class="nav-text">
+      <h1>BayanTap</h1>
+      <p>Marcos Village Water District</p>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="portal-info">
+      <div class="label">Treasurer Portal</div>
+      <div class="month">January 2026</div>
+    </div>
+    <div class="nav-badge">🏅</div>
+    <button class="btn-logout">Log Out</button>
+  </div>
+</nav>
+ 
+<!-- HERO STATS -->
+<div class="hero">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">📋</div>
+        <span class="stat-badge badge-blue">Total</span>
+      </div>
+      <div class="stat-label">Total Households</div>
+      <div class="stat-value">1,741</div>
+      <div class="stat-sub neutral">📈 Active Accounts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">✅</div>
+        <span class="stat-badge badge-green">75%</span>
+      </div>
+      <div class="stat-label">Paid This Month</div>
+      <div class="stat-value">186</div>
+      <div class="stat-sub positive">📈 12% from last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">🕐</div>
+        <span class="stat-badge badge-amber">75%</span>
+      </div>
+      <div class="stat-label">Pending</div>
+      <div class="stat-value">47</div>
+      <div class="stat-sub neutral">Awaiting Collection</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">⛔</div>
+        <span class="stat-badge badge-red">75%</span>
+      </div>
+      <div class="stat-label">Overdue</div>
+      <div class="stat-value">15</div>
+      <div class="stat-sub alert">Requires follow-up</div>
+    </div>
+  </div>
+</div>
+ 
+<!-- MAIN -->
+<div class="main">
+ 
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search by name or household number…">
+    </div>
+    <button class="filter-btn">All Status ▾</button>
+    <button class="filter-btn">January 2026 ▾</button>
+  </div>
+ 
+  <!-- Content Grid -->
+  <div class="content-grid">
+ 
+    <!-- Bills Table -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <h2>Resident Bills</h2>
+        <p>January 2026 · Marcos Village</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Household</th>
+              <th>Name</th>
+              <th>Usage</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">1</div><span class="hh-id">Blk 9 Lot 2</span></div></td>
+              <td><div class="res-name">Justin Basco</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">23 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱575.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">2</div><span class="hh-id">Blk 08 Lot 3</span></div></td>
+              <td><div class="res-name">James Tanglao</div><div class="res-date">Paid: Jan 11, 2026</div></td>
+              <td><div class="usage-main">32 m³</div><div class="usage-range">2156 → 2189</div></td>
+              <td><span class="amount">₱885.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">3</div><span class="hh-id">Blk 5 Lot 6</span></div></td>
+              <td><div class="res-name">Ian Patrick Reyes</div><div class="res-date">Pending</div></td>
+              <td><div class="usage-main">28 m³</div><div class="usage-range">987 → 1015</div></td>
+              <td><span class="amount">₱700.00</span></td>
+              <td><span class="status-chip chip-unpaid">UNPAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">4</div><span class="hh-id">Blk 15 Lot 2</span></div></td>
+              <td><div class="res-name">Janella Ashley S. Gomez</div><div class="res-date">Paid: Jan 19, 2026</div></td>
+              <td><div class="usage-main">27 m³</div><div class="usage-range">1246 → 2268</div></td>
+              <td><span class="amount">₱960.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">5</div><span class="hh-id">Blk 15 Lot 7</span></div></td>
+              <td><div class="res-name">Ronald Barangay</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">33 m³</div><div class="usage-range">1825 → 1768</div></td>
+              <td><span class="amount">₱650.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">6</div><span class="hh-id">Blk 4 Lot 1</span></div></td>
+              <td><div class="res-name">Aliyah Macapagal</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">26 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱320.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">7</div><span class="hh-id">Blk 15 Lot 8</span></div></td>
+              <td><div class="res-name">Rafael Laquian</div><div class="res-date">Pending</div></td>
+              <td><div class="usage-main">23 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱600.00</span></td>
+              <td><span class="status-chip chip-unpaid">UNPAID</span></td>
+              <td><button class="action-btn" title="View">⋯</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- Receipt Card -->
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <div>
+          <div class="title">Receipt Review</div>
+          <div class="sub">Official payment receipt</div>
+        </div>
+        <button class="btn-print" onclick="window.print()">🖨️ PRINT</button>
+      </div>
+      <div class="receipt-body">
+        <div class="receipt-logo">
+          <div class="r-title">BAYANTAP</div>
+          <div class="r-sub">Marcos Village Water District</div>
+          <div class="r-off">Official Payment Receipt</div>
+        </div>
+        <hr class="receipt-divider">
+        <div class="receipt-meta">
+          <div class="receipt-row"><span class="key">Receipt No:</span><span class="val bold">MV-2026-0156</span></div>
+          <div class="receipt-row"><span class="key">Date:</span><span class="val">January 20, 2026</span></div>
+          <div class="receipt-row"><span class="key">Household No:</span><span class="val">Blk 15 Lot 2</span></div>
+          <div class="receipt-row"><span class="key">Name:</span><span class="val bold">Janella Ashley Gomez</span></div>
+        </div>
+        <div class="consumption-box">
+          <div class="c-title">Water Consumption</div>
+          <div class="c-row"><span>Previous Reading:</span><span>2755 m³</span></div>
+          <div class="c-row"><span>Current Reading:</span><span>2543 m³</span></div>
+          <div class="c-total"><span>Total:</span><span>32 m³</span></div>
+        </div>
+        <div class="total-row">
+          <span class="label">Total Amount:</span>
+          <span class="amount">₱800.00</span>
+        </div>
+        <div class="paid-badge">✓ Payment Received</div>
+        <hr class="receipt-divider">
+        <div class="sig-row">
+          <div class="sig-box">
+            <div class="sig-label">Resident Signature</div>
+            <div class="sig-name">Janella Ashley Gomez</div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-label">Treasurer Signature</div>
+            <div class="sig-name">Carmen Santos</div>
+          </div>
+        </div>
+        <div class="receipt-footer">
+          Official Receipt · BayanTap Water District<br>
+          For inquiries: Barangay Hall, Marcos Village
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+</body>
+</html>
