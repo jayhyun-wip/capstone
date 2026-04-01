@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BayanTap – Treasurer Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="login.css">
+</head>
+<body>
+ 
+<!-- NAVIGATION BAR -->
+<nav>
+  <div class="nav-inner">
+ 
+    <!-- Brand -->
+    <a class="nav-brand" href="bayantap-dashboard.html">
+      <div class="nav-logo">💧</div>
+      <div class="nav-text">
+        <h1>BayanTap</h1>
+        <p>Marcos Village Water District</p>
+      </div>
+    </a>
+ 
+    <!-- Center nav links (desktop) -->
+    <div class="nav-links">
+      <button class="nav-link active" onclick="setActive(this)" data-page="dashboard">
+        <span class="nl-icon">🏠</span> Dashboard
+      </button>
+      <button class="nav-link" onclick="setActive(this)" data-page="residents">
+        <span class="nl-icon">👥</span> Residents
+      </button>
+      <button class="nav-link" onclick="setActive(this)" data-page="billing">
+        <span class="nl-icon">🧾</span> Billing
+        <span class="nl-badge">3</span>
+      </button>
+      <button class="nav-link" onclick="setActive(this)" data-page="reports">
+        <span class="nl-icon">📊</span> Reports
+      </button>
+      <button class="nav-link" onclick="setActive(this)" data-page="settings">
+        <span class="nl-icon">⚙️</span> Settings
+      </button>
+    </div>
+ 
+    <!-- Right side -->
+    <div class="nav-right">
+ 
+      <!-- Notification bell -->
+      <div style="position:relative;">
+        <button class="nav-icon-btn" data-tip="Notifications" onclick="toggleNotif()" id="notifBtn" aria-label="Notifications">
+          🔔
+          <span class="notif-dot" id="notifDot"></span>
+        </button>
+        <div class="notif-dropdown" id="notifDropdown">
+          <div class="notif-header">
+            <span>Notifications</span>
+            <button onclick="markAllRead()">Mark all read</button>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon ni-amber">⚠️</div>
+            <div class="notif-text">
+              <div class="nt-title">15 overdue accounts</div>
+              <div class="nt-body">January 2026 billing — requires follow-up action</div>
+              <div class="nt-time">2 hours ago</div>
+            </div>
+            <div class="unread-pip"></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon ni-green">✅</div>
+            <div class="notif-text">
+              <div class="nt-title">Payment received</div>
+              <div class="nt-body">Janella Ashley Gomez — Blk 15 Lot 2 paid ₱960.00</div>
+              <div class="nt-time">4 hours ago</div>
+            </div>
+            <div class="unread-pip"></div>
+          </div>
+          <div class="notif-item unread">
+            <div class="notif-icon ni-blue">📋</div>
+            <div class="notif-text">
+              <div class="nt-title">New resident added</div>
+              <div class="nt-body">Blk 4 Lot 1 — Aliyah Macapagal registered</div>
+              <div class="nt-time">Yesterday</div>
+            </div>
+            <div class="unread-pip"></div>
+          </div>
+          <div class="notif-item">
+            <div class="notif-icon ni-blue">📊</div>
+            <div class="notif-text">
+              <div class="nt-title">Monthly report ready</div>
+              <div class="nt-body">December 2025 billing summary is available</div>
+              <div class="nt-time">2 days ago</div>
+            </div>
+          </div>
+          <div class="notif-footer" onclick="toggleNotif()">View all notifications →</div>
+        </div>
+      </div>
+ 
+      <!-- Settings icon -->
+      <button class="nav-icon-btn" data-tip="Settings" onclick="setActive(document.querySelector('[data-page=settings]'))" aria-label="Settings">⚙️</button>
+ 
+      <!-- Divider -->
+      <div style="width:1px;height:28px;background:var(--gray-200);margin:0 4px;flex-shrink:0;"></div>
+ 
+      <!-- User avatar + dropdown -->
+      <div class="user-menu-wrap">
+        <button class="user-avatar-btn" id="userMenuBtn" onclick="toggleUserMenu()" aria-label="User menu">
+          <div class="avatar-circle">🏅</div>
+          <div class="avatar-info">
+            <div class="av-name">Carmen Santos</div>
+            <div class="av-role">Treasurer</div>
+          </div>
+          <span class="avatar-caret">▾</span>
+        </button>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="ud-header">
+            <div class="ud-name">Carmen Santos</div>
+            <div class="ud-email">treasurer@bayantap.gov.ph</div>
+          </div>
+          <button class="ud-item" onclick="closeUserMenu()"><span class="ud-icon">👤</span> My Profile</button>
+          <button class="ud-item" onclick="closeUserMenu()"><span class="ud-icon">🔒</span> Change Password</button>
+          <button class="ud-item" onclick="closeUserMenu()"><span class="ud-icon">⚙️</span> Preferences</button>
+          <div class="ud-divider"></div>
+          <a class="ud-item" href="logout.html"><span class="ud-icon">🚪</span> Log Out</a>
+        </div>
+      </div>
+ 
+      <!-- Hamburger (mobile only) -->
+      <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Menu">
+        <span class="hb-line"></span>
+        <span class="hb-line"></span>
+        <span class="hb-line"></span>
+      </button>
+ 
+    </div><!-- /nav-right -->
+  </div><!-- /nav-inner -->
+ 
+  <!-- Mobile drawer -->
+  <div class="mobile-drawer" id="mobileDrawer">
+ 
+    <!-- User info -->
+    <div class="drawer-user">
+      <div class="avatar-circle">🏅</div>
+      <div class="du-info">
+        <div class="du-name">Carmen Santos</div>
+        <div class="du-role">Treasurer · January 2026</div>
+      </div>
+    </div>
+    <div class="drawer-divider"></div>
+ 
+    <!-- Nav links -->
+    <div class="drawer-section-label">Navigation</div>
+    <button class="drawer-link active" onclick="setActiveDrawer(this,'dashboard')"><span class="dl-icon">🏠</span> Dashboard</button>
+    <button class="drawer-link" onclick="setActiveDrawer(this,'residents')"><span class="dl-icon">👥</span> Residents</button>
+    <button class="drawer-link" onclick="setActiveDrawer(this,'billing')">
+      <span class="dl-icon">🧾</span> Billing
+      <span class="dl-badge">3</span>
+    </button>
+    <button class="drawer-link" onclick="setActiveDrawer(this,'reports')"><span class="dl-icon">📊</span> Reports</button>
+    <button class="drawer-link" onclick="setActiveDrawer(this,'settings')"><span class="dl-icon">⚙️</span> Settings</button>
+ 
+    <div class="drawer-divider"></div>
+ 
+    <!-- Account -->
+    <div class="drawer-section-label">Account</div>
+    <button class="drawer-link"><span class="dl-icon">👤</span> My Profile</button>
+    <button class="drawer-link"><span class="dl-icon">🔔</span> Notifications <span class="dl-badge">3</span></button>
+    <button class="drawer-link"><span class="dl-icon">🔒</span> Change Password</button>
+ 
+    <div class="drawer-divider"></div>
+    <a class="drawer-link danger" href="bayantap-logout.html"><span class="dl-icon">🚪</span> Log Out</a>
+ 
+  </div><!-- /mobile-drawer -->
+</nav>
+ 
+<!-- BREADCRUMB -->
+<div class="breadcrumb-bar" id="breadcrumbBar">
+  <a href="bayantap-dashboard.html">🏠 Home</a>
+  <span class="bc-sep">›</span>
+  <span class="bc-current" id="bcCurrent">Dashboard</span>
+  <span class="bc-badge" id="bcBadge">January 2026</span>
+</div>
+ 
+<!-- HERO STATS -->
+<div class="hero">
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">📋</div>
+        <span class="stat-badge badge-blue">Total</span>
+      </div>
+      <div class="stat-label">Total Households</div>
+      <div class="stat-value">1,741</div>
+      <div class="stat-sub neutral">📈 Active Accounts</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">✅</div>
+        <span class="stat-badge badge-green">75%</span>
+      </div>
+      <div class="stat-label">Paid This Month</div>
+      <div class="stat-value">186</div>
+      <div class="stat-sub positive">📈 12% from last month</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">🕐</div>
+        <span class="stat-badge badge-amber">75%</span>
+      </div>
+      <div class="stat-label">Pending</div>
+      <div class="stat-value">47</div>
+      <div class="stat-sub neutral">Awaiting Collection</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-header">
+        <div class="stat-icon">⛔</div>
+        <span class="stat-badge badge-red">75%</span>
+      </div>
+      <div class="stat-label">Overdue</div>
+      <div class="stat-value">15</div>
+      <div class="stat-sub alert">Requires follow-up</div>
+    </div>
+  </div>
+</div>
+ 
+<!-- MAIN -->
+<div class="main">
+ 
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <!-- Search -->
+    <div class="search-wrap">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Search by name or household number…">
+    </div>
+ 
+    <!-- Status filter -->
+    <div class="filter-wrap">
+      <select class="filter-select" id="statusFilter" aria-label="Filter by status">
+        <option value="">All Status</option>
+        <option value="paid">Paid</option>
+        <option value="unpaid">Unpaid</option>
+        <option value="pending">Pending</option>
+      </select>
+    </div>
+ 
+    <!-- Month filter -->
+    <div class="filter-wrap">
+      <select class="filter-select" id="monthFilter" aria-label="Filter by month">
+        <option value="jan2026" selected>January 2026</option>
+        <option value="dec2025">December 2025</option>
+        <option value="nov2025">November 2025</option>
+        <option value="oct2025">October 2025</option>
+      </select>
+    </div>
+  </div>
+ 
+  <!-- Content Grid -->
+  <div class="content-grid">
+ 
+    <!-- Bills Table -->
+    <div class="table-card">
+      <div class="table-card-header">
+        <div class="header-left">
+          <h2>Resident Bills</h2>
+          <p>January 2026 · Marcos Village</p>
+        </div>
+        <button class="btn-add-resident" onclick="openAddResident()">
+          <span style="font-size:1.1rem;font-weight:800;">＋</span> Add Resident
+        </button>
+      </div>
+      <!-- table-wrap handles horizontal scroll on small screens -->
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Household</th>
+              <th>Name</th>
+              <th>Usage</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">1</div><span class="hh-id">Blk 9 Lot 2</span></div></td>
+              <td><div class="res-name">Justin Basco</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">23 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱575.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">2</div><span class="hh-id">Blk 08 Lot 3</span></div></td>
+              <td><div class="res-name">James Tanglao</div><div class="res-date">Paid: Jan 11, 2026</div></td>
+              <td><div class="usage-main">32 m³</div><div class="usage-range">2156 → 2189</div></td>
+              <td><span class="amount">₱885.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">3</div><span class="hh-id">Blk 5 Lot 6</span></div></td>
+              <td><div class="res-name">Ian Patrick Reyes</div><div class="res-date">Pending</div></td>
+              <td><div class="usage-main">28 m³</div><div class="usage-range">987 → 1015</div></td>
+              <td><span class="amount">₱700.00</span></td>
+              <td><span class="status-chip chip-unpaid">UNPAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">4</div><span class="hh-id">Blk 15 Lot 2</span></div></td>
+              <td><div class="res-name">Janella Ashley S. Gomez</div><div class="res-date">Paid: Jan 19, 2026</div></td>
+              <td><div class="usage-main">27 m³</div><div class="usage-range">1246 → 2268</div></td>
+              <td><span class="amount">₱960.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">5</div><span class="hh-id">Blk 15 Lot 7</span></div></td>
+              <td><div class="res-name">Ronald Barangay</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">33 m³</div><div class="usage-range">1825 → 1768</div></td>
+              <td><span class="amount">₱650.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">6</div><span class="hh-id">Blk 4 Lot 1</span></div></td>
+              <td><div class="res-name">Aliyah Macapagal</div><div class="res-date">Paid: Jan 15, 2026</div></td>
+              <td><div class="usage-main">26 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱320.00</span></td>
+              <td><span class="status-chip chip-paid">PAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="hh-cell"><div class="hh-chip">7</div><span class="hh-id">Blk 15 Lot 8</span></div></td>
+              <td><div class="res-name">Rafael Laquian</div><div class="res-date">Pending</div></td>
+              <td><div class="usage-main">23 m³</div><div class="usage-range">1245 → 1268</div></td>
+              <td><span class="amount">₱600.00</span></td>
+              <td><span class="status-chip chip-unpaid">UNPAID</span></td>
+              <td class="action-cell">
+                <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+                <div class="action-menu" role="menu">
+                  <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+                  <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+                  <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+                  <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <!-- Receipt Card -->
+    <div class="receipt-card">
+      <div class="receipt-header">
+        <div>
+          <div class="title">Receipt Review</div>
+          <div class="sub">Official payment receipt</div>
+        </div>
+        <button class="btn-print" onclick="window.print()">🖨️ PRINT</button>
+      </div>
+      <div class="receipt-body">
+        <div class="receipt-logo">
+          <div class="r-title">BAYANTAP</div>
+          <div class="r-sub">Marcos Village Water District</div>
+          <div class="r-off">Official Payment Receipt</div>
+        </div>
+        <hr class="receipt-divider">
+        <div class="receipt-meta">
+          <div class="receipt-row"><span class="key">Receipt No:</span><span class="val bold">MV-2026-0156</span></div>
+          <div class="receipt-row"><span class="key">Date:</span><span class="val">January 20, 2026</span></div>
+          <div class="receipt-row"><span class="key">Household No:</span><span class="val">Blk 15 Lot 2</span></div>
+          <div class="receipt-row"><span class="key">Name:</span><span class="val bold">Janella Ashley Gomez</span></div>
+        </div>
+        <div class="consumption-box">
+          <div class="c-title">Water Consumption</div>
+          <div class="c-row"><span>Previous Reading:</span><span>2755 m³</span></div>
+          <div class="c-row"><span>Current Reading:</span><span>2543 m³</span></div>
+          <div class="c-total"><span>Total:</span><span>32 m³</span></div>
+        </div>
+        <div class="total-row">
+          <span class="label">Total Amount:</span>
+          <span class="amount">₱800.00</span>
+        </div>
+        <div class="paid-badge">✓ Payment Received</div>
+        <hr class="receipt-divider">
+        <div class="sig-row">
+          <div class="sig-box">
+            <div class="sig-label">Resident Signature</div>
+            <div class="sig-name">Janella Ashley Gomez</div>
+          </div>
+          <div class="sig-box">
+            <div class="sig-label">Treasurer Signature</div>
+            <div class="sig-name">Carmen Santos</div>
+          </div>
+        </div>
+        <div class="receipt-footer">
+          Official Receipt · BayanTap Water District<br>
+          For inquiries: Barangay Hall, Marcos Village
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+ 
+<!-- ============================================================
+     MODAL: Add Resident — 3 steps
+     Step 1: "Make Sure" checklist
+     Step 2: Fill in resident details
+     Step 3: Success confirmation
+============================================================ -->
+<div class="modal-backdrop" id="modalAddResident" role="dialog" aria-modal="true" aria-labelledby="addResidentTitle">
+  <div class="modal" style="max-width:500px;">
+ 
+    <!-- Step dots -->
+    <div style="padding:18px 20px 0;">
+      <div class="step-indicator">
+        <div class="step-dot active" id="sdot-1"></div>
+        <div class="step-dot"        id="sdot-2"></div>
+        <div class="step-dot"        id="sdot-3"></div>
+      </div>
+    </div>
+ 
+    <!-- ── STEP 1: Make Sure Checklist ── -->
+    <div id="ar-step1">
+      <div class="modal-header" style="padding-top:6px;">
+        <div>
+          <h3 id="addResidentTitle">✅ Before You Add a Resident</h3>
+          <div class="modal-sub">Make sure you have all the required information ready</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalAddResident')" aria-label="Close">✕</button>
+      </div>
+ 
+      <div class="modal-body">
+        <!-- Warning banner -->
+        <div class="warning-banner">
+          <span class="wb-icon">⚠️</span>
+          <span><strong>Make sure</strong> all items below are confirmed before proceeding. Incomplete information may cause billing errors for this household.</span>
+        </div>
+ 
+        <!-- Checklist meta -->
+        <div class="checklist-meta">
+          <span class="checklist-label">Tick each item to confirm</span>
+          <span class="checklist-progress" id="ar-progress">0 / 5 checked</span>
+        </div>
+ 
+        <ul class="checklist" id="ar-checklist">
+          <li onclick="toggleCheck(this)" data-idx="0">
+            <span class="check-box" id="cb-0"></span>
+            <span class="check-text">
+              <strong>🏠 Household address is verified</strong>
+              Block and lot number matches the barangay records
+            </span>
+          </li>
+          <li onclick="toggleCheck(this)" data-idx="1">
+            <span class="check-box" id="cb-1"></span>
+            <span class="check-text">
+              <strong>👤 Resident identity is confirmed</strong>
+              Full name matches a valid government-issued ID
+            </span>
+          </li>
+          <li onclick="toggleCheck(this)" data-idx="2">
+            <span class="check-box" id="cb-2"></span>
+            <span class="check-text">
+              <strong>💧 Water meter has been installed</strong>
+              Meter serial number and initial reading are recorded
+            </span>
+          </li>
+          <li onclick="toggleCheck(this)" data-idx="3">
+            <span class="check-box" id="cb-3"></span>
+            <span class="check-text">
+              <strong>📋 No duplicate household record exists</strong>
+              Searched the current roster and confirmed this is a new entry
+            </span>
+          </li>
+          <li onclick="toggleCheck(this)" data-idx="4">
+            <span class="check-box" id="cb-4"></span>
+            <span class="check-text">
+              <strong>📞 Contact information is available</strong>
+              At least one valid contact number is on hand for notifications
+            </span>
+          </li>
+        </ul>
+      </div>
+ 
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" onclick="closeModal('modalAddResident')">Cancel</button>
+        <button class="modal-btn modal-btn-primary" id="ar-next1-btn" onclick="arGoStep2()" disabled
+          style="opacity:.5;cursor:not-allowed;">
+          Continue →
+        </button>
+      </div>
+    </div><!-- /step1 -->
+ 
+    <!-- ── STEP 2: Resident Details Form ── -->
+    <div id="ar-step2" style="display:none;">
+      <div class="modal-header" style="padding-top:6px;">
+        <div>
+          <h3>🏠 New Resident Details</h3>
+          <div class="modal-sub">Fill in all required fields</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalAddResident')" aria-label="Close">✕</button>
+      </div>
+ 
+      <div class="modal-body">
+        <!-- Household -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Block No. <span style="color:var(--red);">*</span></label>
+            <input type="text" id="ar-block" placeholder="e.g. Blk 9" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>Lot No. <span style="color:var(--red);">*</span></label>
+            <input type="text" id="ar-lot" placeholder="e.g. Lot 2" autocomplete="off">
+          </div>
+        </div>
+ 
+        <!-- Resident name -->
+        <div class="form-group">
+          <label>Full Name <span style="color:var(--red);">*</span></label>
+          <input type="text" id="ar-name" placeholder="e.g. Maria Santos" autocomplete="off">
+        </div>
+ 
+        <!-- Meter readings -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Initial Meter Reading (m³) <span style="color:var(--red);">*</span></label>
+            <input type="number" id="ar-meter" placeholder="e.g. 1000" min="0">
+          </div>
+          <div class="form-group">
+            <label>Monthly Rate (₱) <span style="color:var(--red);">*</span></label>
+            <input type="number" id="ar-rate" placeholder="e.g. 250" min="0" step="0.01">
+          </div>
+        </div>
+ 
+        <!-- Status -->
+        <div class="form-group">
+          <label>Initial Status</label>
+          <select id="ar-status">
+            <option value="unpaid">Unpaid</option>
+            <option value="paid">Paid</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+ 
+        <!-- Contact -->
+        <div class="form-group">
+          <label>Contact Number</label>
+          <input type="tel" id="ar-contact" placeholder="e.g. 09XX-XXX-XXXX" autocomplete="off">
+        </div>
+ 
+        <!-- Inline error -->
+        <div id="ar-error" style="display:none;background:var(--red-bg);color:var(--red);border:1px solid #fca5a5;border-radius:var(--radius-sm);padding:9px 12px;font-size:.8rem;font-weight:600;margin-top:4px;">
+          ⚠️ Please fill in all required fields marked with *.
+        </div>
+      </div>
+ 
+      <div class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" onclick="arGoStep1()">← Back</button>
+        <button class="modal-btn modal-btn-primary" onclick="arGoStep3()">Add Resident ✓</button>
+      </div>
+    </div><!-- /step2 -->
+ 
+    <!-- ── STEP 3: Success ── -->
+    <div id="ar-step3" style="display:none;">
+      <div class="modal-header" style="padding-top:6px;">
+        <div>
+          <h3>Resident Added!</h3>
+          <div class="modal-sub">Record created successfully</div>
+        </div>
+        <button class="modal-close" onclick="closeModal('modalAddResident')" aria-label="Close">✕</button>
+      </div>
+ 
+      <div class="modal-body">
+        <div class="add-success">
+          <div class="success-ring">🏠</div>
+          <h4>Resident successfully added</h4>
+          <p>The new household record has been created and added to the Resident Bills table below.</p>
+          <div class="new-row-badge">✅ <span id="ar-success-label">—</span></div>
+        </div>
+      </div>
+ 
+      <div class="modal-footer" style="justify-content:center;">
+        <button class="modal-btn modal-btn-cancel" onclick="closeModal('modalAddResident')">Close</button>
+        <button class="modal-btn modal-btn-primary" onclick="arAddAnother()">＋ Add Another</button>
+      </div>
+    </div><!-- /step3 -->
+ 
+  </div>
+</div>
+ 
+<!-- ============================================================
+     MODAL: View Receipt
+============================================================ -->
+<div class="modal-backdrop" id="modalViewReceipt" role="dialog" aria-modal="true" aria-labelledby="viewReceiptTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="viewReceiptTitle">👁️ View Receipt</h3>
+        <div class="modal-sub">Official payment receipt</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalViewReceipt')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-receipt-logo">
+        <div class="r-title">BAYANTAP</div>
+        <div class="r-sub">Marcos Village Water District</div>
+        <div class="r-off">Official Payment Receipt</div>
+      </div>
+      <hr class="receipt-divider">
+      <div class="receipt-meta">
+        <div class="receipt-row"><span class="key">Receipt No:</span><span class="val bold" id="vr-receipt-no">—</span></div>
+        <div class="receipt-row"><span class="key">Date:</span><span class="val" id="vr-date">—</span></div>
+        <div class="receipt-row"><span class="key">Household No:</span><span class="val" id="vr-hh">—</span></div>
+        <div class="receipt-row"><span class="key">Name:</span><span class="val bold" id="vr-name">—</span></div>
+      </div>
+      <div class="consumption-box">
+        <div class="c-title">Water Consumption</div>
+        <div class="c-row"><span>Usage:</span><span id="vr-usage">—</span></div>
+        <div class="c-row"><span>Reading Range:</span><span id="vr-range">—</span></div>
+      </div>
+      <div class="total-row">
+        <span class="label">Total Amount:</span>
+        <span class="amount" id="vr-amount">—</span>
+      </div>
+      <div id="vr-status-badge"></div>
+      <hr class="receipt-divider">
+      <div class="receipt-footer">
+        Official Receipt · BayanTap Water District<br>
+        For inquiries: Barangay Hall, Marcos Village
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('modalViewReceipt')">Close</button>
+      <button class="modal-btn modal-btn-primary" onclick="window.print()">🖨️ Print</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ============================================================
+     MODAL: Edit Record (step 1 — form)
+============================================================ -->
+<div class="modal-backdrop" id="modalEditForm" role="dialog" aria-modal="true" aria-labelledby="editFormTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="editFormTitle">✏️ Edit Record</h3>
+        <div class="modal-sub" id="edit-modal-sub">Editing household record</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalEditForm')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Household No.</label>
+          <input type="text" id="edit-hh" placeholder="e.g. Blk 9 Lot 2" readonly style="background:var(--gray-50);color:var(--gray-500);">
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="edit-status">
+            <option value="paid">Paid</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="pending">Pending</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Resident Name</label>
+        <input type="text" id="edit-name" placeholder="Full name">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Usage (m³)</label>
+          <input type="number" id="edit-usage" placeholder="e.g. 23" min="0">
+        </div>
+        <div class="form-group">
+          <label>Amount (₱)</label>
+          <input type="number" id="edit-amount" placeholder="e.g. 575.00" min="0" step="0.01">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Previous Reading</label>
+          <input type="number" id="edit-prev" placeholder="e.g. 1245" min="0">
+        </div>
+        <div class="form-group">
+          <label>Current Reading</label>
+          <input type="number" id="edit-curr" placeholder="e.g. 1268" min="0">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('modalEditForm')">Cancel</button>
+      <button class="modal-btn modal-btn-warning" onclick="requestEditConfirm()">✏️ Review Changes</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ============================================================
+     MODAL: Edit Confirm (step 2 — confirm)
+============================================================ -->
+<div class="modal-backdrop" id="modalEditConfirm" role="dialog" aria-modal="true" aria-labelledby="editConfirmTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="editConfirmTitle">⚠️ Confirm Changes</h3>
+        <div class="modal-sub">Please review before saving</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalEditConfirm')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-icon warning">⚠️</div>
+      <div class="confirm-text">
+        <h4>Save these changes?</h4>
+        <p>You're about to update the record for <strong id="ec-name">—</strong>. This action will overwrite the existing data.</p>
+      </div>
+      <div class="confirm-detail">
+        <div class="cd-row"><span>Household</span><span id="ec-hh">—</span></div>
+        <div class="cd-row"><span>Status → New</span><span id="ec-status">—</span></div>
+        <div class="cd-row"><span>Usage</span><span id="ec-usage">—</span></div>
+        <div class="cd-row"><span>Amount</span><span id="ec-amount">—</span></div>
+        <div class="cd-row"><span>Reading</span><span id="ec-range">—</span></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" onclick="backToEditForm()">← Go Back</button>
+      <button class="modal-btn modal-btn-primary" onclick="confirmEdit()">✔ Save Changes</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- ============================================================
+     MODAL: Delete Confirm
+============================================================ -->
+<div class="modal-backdrop" id="modalDeleteConfirm" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h3 id="deleteConfirmTitle">🗑️ Delete Record</h3>
+        <div class="modal-sub">This action cannot be undone</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modalDeleteConfirm')" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-icon danger">🗑️</div>
+      <div class="confirm-text">
+        <h4>Delete this record?</h4>
+        <p>You're about to permanently delete the record for <strong id="dc-name">—</strong>. This cannot be undone.</p>
+      </div>
+      <div class="confirm-detail">
+        <div class="cd-row"><span>Household</span><span id="dc-hh">—</span></div>
+        <div class="cd-row"><span>Name</span><span id="dc-name2">—</span></div>
+        <div class="cd-row"><span>Amount</span><span id="dc-amount">—</span></div>
+        <div class="cd-row"><span>Status</span><span id="dc-status">—</span></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="modal-btn modal-btn-cancel" onclick="closeModal('modalDeleteConfirm')">Cancel</button>
+      <button class="modal-btn modal-btn-danger" onclick="confirmDelete()">🗑️ Yes, Delete</button>
+    </div>
+  </div>
+</div>
+ 
+<script>
+  /* ============================================================
+     NAVBAR — active links, dropdowns, hamburger, breadcrumb
+  ============================================================ */
+ 
+  /* Active nav link (desktop) */
+  function setActive(btn) {
+    if (!btn) return;
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    btn.classList.add('active');
+    updateBreadcrumb(btn.dataset.page);
+    closeAllDropdowns();
+    closeDrawer();
+  }
+ 
+  /* Active drawer link (mobile) */
+  function setActiveDrawer(btn, page) {
+    document.querySelectorAll('.drawer-link').forEach(l => l.classList.remove('active'));
+    btn.classList.add('active');
+    // Sync desktop link too
+    const desktop = document.querySelector('.nav-link[data-page="' + page + '"]');
+    if (desktop) {
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      desktop.classList.add('active');
+    }
+    updateBreadcrumb(page);
+    closeDrawer();
+  }
+ 
+  /* Breadcrumb */
+  const pageLabels = {
+    dashboard: 'Dashboard',
+    residents: 'Residents',
+    billing:   'Billing',
+    reports:   'Reports',
+    settings:  'Settings',
+  };
+  function updateBreadcrumb(page) {
+    const el = document.getElementById('bcCurrent');
+    if (el) el.textContent = pageLabels[page] || 'Dashboard';
+  }
+ 
+  /* ── Notification dropdown ── */
+  function toggleNotif() {
+    const dd  = document.getElementById('notifDropdown');
+    const isOpen = dd.classList.contains('is-open');
+    closeAllDropdowns();
+    if (!isOpen) {
+      dd.classList.add('is-open');
+      document.getElementById('notifBtn').style.background = 'var(--gray-100)';
+    }
+  }
+ 
+  function markAllRead() {
+    document.querySelectorAll('.notif-item.unread').forEach(el => el.classList.remove('unread'));
+    document.querySelectorAll('.unread-pip').forEach(el => el.remove());
+    document.getElementById('notifDot').style.display = 'none';
+    closeAllDropdowns();
+  }
+ 
+  /* ── User menu dropdown ── */
+  function toggleUserMenu() {
+    const dd  = document.getElementById('userDropdown');
+    const btn = document.getElementById('userMenuBtn');
+    const isOpen = dd.classList.contains('is-open');
+    closeAllDropdowns();
+    if (!isOpen) {
+      dd.classList.add('is-open');
+      btn.classList.add('open');
+    }
+  }
+  function closeUserMenu() {
+    document.getElementById('userDropdown').classList.remove('is-open');
+    document.getElementById('userMenuBtn').classList.remove('open');
+  }
+ 
+  function closeAllDropdowns() {
+    document.getElementById('notifDropdown').classList.remove('is-open');
+    document.getElementById('userDropdown').classList.remove('is-open');
+    document.getElementById('userMenuBtn').classList.remove('open');
+    document.getElementById('notifBtn').style.background = '';
+  }
+ 
+  /* Close dropdowns on outside click */
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('nav')) closeAllDropdowns();
+    if (!e.target.closest('.action-cell')) closeAllMenus();
+  });
+ 
+  /* ── Hamburger / mobile drawer ── */
+  function toggleDrawer() {
+    const drawer = document.getElementById('mobileDrawer');
+    const ham    = document.getElementById('hamburger');
+    const isOpen = drawer.classList.contains('is-open');
+    closeAllDropdowns();
+    if (isOpen) {
+      drawer.classList.remove('is-open');
+      ham.classList.remove('open');
+    } else {
+      drawer.classList.add('is-open');
+      ham.classList.add('open');
+    }
+  }
+ 
+  function closeDrawer() {
+    document.getElementById('mobileDrawer').classList.remove('is-open');
+    document.getElementById('hamburger').classList.remove('open');
+  }
+ 
+  /* Close drawer on Escape */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeAllDropdowns(); closeDrawer(); closeAllModals(); }
+  });
+ 
+  /* ============================================================
+     HELPERS
+  ============================================================ */
+  function openModal(id)  { document.getElementById(id).classList.add('is-open');    document.body.style.overflow = 'hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('is-open'); document.body.style.overflow = '';       }
+  function closeAllModals() {
+    document.querySelectorAll('.modal-backdrop.is-open').forEach(m => m.classList.remove('is-open'));
+    document.body.style.overflow = '';
+  }
+ 
+  // Close modal on backdrop click
+  document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+    backdrop.addEventListener('click', function(e) {
+      if (e.target === this) closeModal(this.id);
+    });
+  });
+  // Close on Escape
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
+ 
+  /* ============================================================
+     ACTION CONTEXT MENU
+  ============================================================ */
+  function toggleMenu(btn) {
+    const menu   = btn.nextElementSibling;
+    const isOpen = menu.classList.contains('is-open');
+    closeAllMenus();
+    if (!isOpen) { menu.classList.add('is-open'); btn.classList.add('open'); }
+  }
+  function closeAllMenus() {
+    document.querySelectorAll('.action-menu.is-open').forEach(m => {
+      m.classList.remove('is-open');
+      m.previousElementSibling.classList.remove('open');
+    });
+  }
+  document.addEventListener('click', e => { if (!e.target.closest('.action-cell')) closeAllMenus(); });
+ 
+  /* ============================================================
+     ROW DATA EXTRACTOR — reads data straight from the table row
+  ============================================================ */
+  let _activeRow = null;   // reference to the currently acting row
+ 
+  function getRowData(actionBtn) {
+    const row    = actionBtn.closest('tr');
+    _activeRow   = row;
+    return {
+      hh     : row.querySelector('.hh-id')?.textContent.trim()        || '—',
+      name   : row.querySelector('.res-name')?.textContent.trim()     || '—',
+      date   : row.querySelector('.res-date')?.textContent.trim()     || '—',
+      usage  : row.querySelector('.usage-main')?.textContent.trim()   || '—',
+      range  : row.querySelector('.usage-range')?.textContent.trim()  || '—',
+      amount : row.querySelector('.amount')?.textContent.trim()       || '—',
+      status : row.querySelector('.status-chip')?.textContent.trim()  || '—',
+    };
+  }
+ 
+  /* ============================================================
+     1. VIEW RECEIPT
+  ============================================================ */
+  function openViewReceipt(btn) {
+    closeAllMenus();
+    const d = getRowData(btn);
+    document.getElementById('vr-receipt-no').textContent = 'MV-2026-' + Math.floor(Math.random()*9000+1000);
+    document.getElementById('vr-date').textContent       = d.date.replace('Paid: ','') || 'Pending';
+    document.getElementById('vr-hh').textContent         = d.hh;
+    document.getElementById('vr-name').textContent       = d.name;
+    document.getElementById('vr-usage').textContent      = d.usage;
+    document.getElementById('vr-range').textContent      = d.range;
+    document.getElementById('vr-amount').textContent     = d.amount;
+    const badge = document.getElementById('vr-status-badge');
+    const isPaid = d.status.toUpperCase() === 'PAID';
+    badge.className = isPaid ? 'paid-badge' : '';
+    badge.textContent = isPaid ? '✓ Payment Received' : '';
+    openModal('modalViewReceipt');
+  }
+ 
+  /* ============================================================
+     2. EDIT RECORD — two-step: form → confirm → save
+  ============================================================ */
+  function openEditRecord(btn) {
+    closeAllMenus();
+    const d = getRowData(btn);
+    document.getElementById('edit-modal-sub').textContent = d.hh + ' · ' + d.name;
+    document.getElementById('edit-hh').value     = d.hh;
+    document.getElementById('edit-name').value   = d.name;
+    document.getElementById('edit-usage').value  = parseFloat(d.usage) || '';
+    document.getElementById('edit-amount').value = parseFloat(d.amount.replace('₱','').replace(',','')) || '';
+    const rangeParts = d.range.split('→').map(s=>s.trim());
+    document.getElementById('edit-prev').value   = rangeParts[0] || '';
+    document.getElementById('edit-curr').value   = rangeParts[1] || '';
+    const statusSel = document.getElementById('edit-status');
+    statusSel.value = d.status.toLowerCase().includes('paid') ? 'paid' : d.status.toLowerCase().includes('unpaid') ? 'unpaid' : 'pending';
+    openModal('modalEditForm');
+  }
+ 
+  function requestEditConfirm() {
+    // Pull values from form
+    const name   = document.getElementById('edit-name').value.trim();
+    const hh     = document.getElementById('edit-hh').value.trim();
+    const usage  = document.getElementById('edit-usage').value;
+    const amount = document.getElementById('edit-amount').value;
+    const prev   = document.getElementById('edit-prev').value;
+    const curr   = document.getElementById('edit-curr').value;
+    const status = document.getElementById('edit-status').value;
+ 
+    if (!name) { document.getElementById('edit-name').focus(); return; }
+ 
+    // Populate confirm modal
+    document.getElementById('ec-name').textContent   = name;
+    document.getElementById('ec-hh').textContent     = hh;
+    document.getElementById('ec-status').textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    document.getElementById('ec-usage').textContent  = usage + ' m³';
+    document.getElementById('ec-amount').textContent = '₱' + parseFloat(amount||0).toFixed(2);
+    document.getElementById('ec-range').textContent  = prev + ' → ' + curr;
+ 
+    closeModal('modalEditForm');
+    openModal('modalEditConfirm');
+  }
+ 
+  function backToEditForm() {
+    closeModal('modalEditConfirm');
+    openModal('modalEditForm');
+  }
+ 
+  function confirmEdit() {
+    if (!_activeRow) { closeAllModals(); return; }
+ 
+    // Write updated values back to the table row
+    const name   = document.getElementById('edit-name').value.trim();
+    const usage  = document.getElementById('edit-usage').value;
+    const amount = document.getElementById('edit-amount').value;
+    const prev   = document.getElementById('edit-prev').value;
+    const curr   = document.getElementById('edit-curr').value;
+    const status = document.getElementById('edit-status').value;
+ 
+    _activeRow.querySelector('.res-name').textContent   = name;
+    _activeRow.querySelector('.usage-main').textContent = usage + ' m³';
+    _activeRow.querySelector('.usage-range').textContent= prev + ' → ' + curr;
+    _activeRow.querySelector('.amount').textContent     = '₱' + parseFloat(amount||0).toFixed(2);
+ 
+    const chip = _activeRow.querySelector('.status-chip');
+    chip.textContent = status.toUpperCase();
+    chip.className   = 'status-chip ' + (status === 'paid' ? 'chip-paid' : 'chip-unpaid');
+ 
+    closeAllModals();
+    flashRow(_activeRow, 'var(--blue-light)');
+    _activeRow = null;
+  }
+ 
+  /* ============================================================
+     3. DELETE — confirm → remove row
+  ============================================================ */
+  function openDeleteConfirm(btn) {
+    closeAllMenus();
+    const d = getRowData(btn);
+    document.getElementById('dc-name').textContent  = d.name;
+    document.getElementById('dc-name2').textContent = d.name;
+    document.getElementById('dc-hh').textContent    = d.hh;
+    document.getElementById('dc-amount').textContent= d.amount;
+    document.getElementById('dc-status').textContent= d.status;
+    openModal('modalDeleteConfirm');
+  }
+ 
+  function confirmDelete() {
+    if (_activeRow) {
+      _activeRow.style.transition = 'opacity .3s, transform .3s';
+      _activeRow.style.opacity    = '0';
+      _activeRow.style.transform  = 'translateX(20px)';
+      setTimeout(() => { _activeRow.remove(); _activeRow = null; }, 310);
+    }
+    closeAllModals();
+  }
+ 
+  /* ============================================================
+     4. PRINT — uses existing window.print()
+  ============================================================ */
+  function doPrint(btn) {
+    closeAllMenus();
+    window.print();
+  }
+ 
+  /* ============================================================
+     VISUAL FLASH — brief highlight after save
+  ============================================================ */
+  function flashRow(row, color) {
+    row.style.transition  = 'background .15s';
+    row.style.background  = color;
+    setTimeout(() => { row.style.background = ''; }, 900);
+  }
+ 
+  /* ============================================================
+     LIVE SEARCH + STATUS FILTER
+  ============================================================ */
+  const searchInput  = document.getElementById('searchInput');
+  const statusFilter = document.getElementById('statusFilter');
+ 
+  function applyFilters() {
+    const query  = searchInput.value.toLowerCase().trim();
+    const status = statusFilter.value.toLowerCase();
+    document.querySelectorAll('tbody tr').forEach(row => {
+      const name     = row.querySelector('.res-name')?.textContent.toLowerCase()    || '';
+      const hhId     = row.querySelector('.hh-id')?.textContent.toLowerCase()       || '';
+      const chipText = row.querySelector('.status-chip')?.textContent.toLowerCase() || '';
+      const matchSearch = !query  || name.includes(query) || hhId.includes(query);
+      const matchStatus = !status || chipText.includes(status);
+      row.style.display = (matchSearch && matchStatus) ? '' : 'none';
+    });
+  }
+ 
+  /* ============================================================
+     ADD RESIDENT — 3-step modal logic
+  ============================================================ */
+  const AR_TOTAL = 5;
+  let   arChecked = new Set();
+ 
+  function openAddResident() {
+    // Reset every time we open
+    arChecked.clear();
+    document.querySelectorAll('#ar-checklist li').forEach(li => {
+      li.classList.remove('checked');
+      li.querySelector('.check-box').textContent = '';
+    });
+    updateArProgress();
+    arShowStep(1);
+    openModal('modalAddResident');
+  }
+ 
+  /* Toggle a checklist item */
+  function toggleCheck(li) {
+    const idx = li.dataset.idx;
+    if (arChecked.has(idx)) {
+      arChecked.delete(idx);
+      li.classList.remove('checked');
+      li.querySelector('.check-box').textContent = '';
+    } else {
+      arChecked.add(idx);
+      li.classList.add('checked');
+      li.querySelector('.check-box').textContent = '✓';
+    }
+    updateArProgress();
+  }
+ 
+  function updateArProgress() {
+    const n   = arChecked.size;
+    const btn = document.getElementById('ar-next1-btn');
+    document.getElementById('ar-progress').textContent = n + ' / ' + AR_TOTAL + ' checked';
+    if (n === AR_TOTAL) {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor  = 'pointer';
+    } else {
+      btn.disabled = true;
+      btn.style.opacity = '.5';
+      btn.style.cursor  = 'not-allowed';
+    }
+  }
+ 
+  /* Step navigation */
+  function arShowStep(n) {
+    [1,2,3].forEach(i => {
+      document.getElementById('ar-step' + i).style.display = (i === n) ? 'block' : 'none';
+      const dot = document.getElementById('sdot-' + i);
+      dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    });
+  }
+ 
+  function arGoStep1() { arShowStep(1); }
+ 
+  function arGoStep2() {
+    // Clear form fields & error
+    ['ar-block','ar-lot','ar-name','ar-meter','ar-rate','ar-contact'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('ar-status').value = 'unpaid';
+    document.getElementById('ar-error').style.display = 'none';
+    arShowStep(2);
+  }
+ 
+  function arGoStep3() {
+    const block   = document.getElementById('ar-block').value.trim();
+    const lot     = document.getElementById('ar-lot').value.trim();
+    const name    = document.getElementById('ar-name').value.trim();
+    const meter   = document.getElementById('ar-meter').value.trim();
+    const rate    = document.getElementById('ar-rate').value.trim();
+ 
+    // Validate required fields
+    if (!block || !lot || !name || !meter || !rate) {
+      document.getElementById('ar-error').style.display = 'block';
+      return;
+    }
+    document.getElementById('ar-error').style.display = 'none';
+ 
+    const status  = document.getElementById('ar-status').value;
+    const hh      = block + ' ' + lot;
+    const amount  = parseFloat(rate).toFixed(2);
+ 
+    // ── Inject new row into the table ──
+    injectNewRow({ hh, name, meter, amount, status });
+ 
+    // Success label
+    document.getElementById('ar-success-label').textContent = hh + ' · ' + name;
+ 
+    arShowStep(3);
+  }
+ 
+  function arAddAnother() {
+    arChecked.clear();
+    document.querySelectorAll('#ar-checklist li').forEach(li => {
+      li.classList.remove('checked');
+      li.querySelector('.check-box').textContent = '';
+    });
+    updateArProgress();
+    arShowStep(1);
+  }
+ 
+  /* ── Build and append a new <tr> to the bills table ── */
+  function injectNewRow({ hh, name, meter, amount, status }) {
+    const tbody   = document.querySelector('tbody');
+    const rowNum  = tbody.querySelectorAll('tr').length + 1;
+    const chipCls = status === 'paid' ? 'chip-paid' : 'chip-unpaid';
+    const chipLbl = status.toUpperCase();
+    const today   = new Date();
+    const months  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const dateStr = status === 'paid'
+      ? 'Paid: ' + months[today.getMonth()] + ' ' + today.getDate() + ', ' + today.getFullYear()
+      : 'Pending';
+ 
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="hh-cell"><div class="hh-chip">${rowNum}</div><span class="hh-id">${hh}</span></div></td>
+      <td><div class="res-name">${name}</div><div class="res-date">${dateStr}</div></td>
+      <td><div class="usage-main">0 m³</div><div class="usage-range">${meter} → ${meter}</div></td>
+      <td><span class="amount">₱${amount}</span></td>
+      <td><span class="status-chip ${chipCls}">${chipLbl}</span></td>
+      <td class="action-cell">
+        <button class="action-btn" title="Actions" onclick="toggleMenu(this)">⋯</button>
+        <div class="action-menu" role="menu">
+          <button onclick="openViewReceipt(this)"><span class="menu-icon">👁️</span> View Receipt</button>
+          <button onclick="openEditRecord(this)"><span class="menu-icon">✏️</span> Edit Record</button>
+          <button onclick="doPrint(this)"><span class="menu-icon">🖨️</span> Print</button>
+          <button class="danger" onclick="openDeleteConfirm(this)"><span class="menu-icon">🗑️</span> Delete</button>
+        </div>
+      </td>`;
+ 
+    // Highlight animation on new row
+    tr.style.background  = '#eff6ff';
+    tr.style.transition  = 'background 1.2s ease';
+    tbody.appendChild(tr);
+    setTimeout(() => { tr.style.background = ''; }, 1400);
+  }
+ 
+  searchInput.addEventListener('input',   applyFilters);
+  statusFilter.addEventListener('change', applyFilters);
+</script>
+ 
+</body>
+</html>
